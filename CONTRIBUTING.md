@@ -8,9 +8,11 @@ At Tanaos we 🧡 open source. We encourage contributions of any kind to any oth
 - ...
 
 ## Issues
-We use GitHub issues to track bugs and encourage users and contributors to file here any bug they can find within the project: https://github.com/tanaos/t-llama3/issues.
+Have you found a bug or come up with an idea on how to improve the project? File it on [our issues page](https://github.com/tanaos/t-llama3/issues)
 
-Have you found an issue you are interested in solving? That's great! Just follow the procedure below 👇
+## How to get started
+
+Want to contribute? The best place to start is [our issues page](https://github.com/tanaos/t-llama3/issues). Find an issue you like and follow the procedure below 👇
 
 ## Pull Requests
-We warmly welcome your pull requests. In order to create a pull request, simply fork the repo and create your branch from `main`. Once you are done developing, forward your PR here: https://github.com/tanaos/t-llama3/pulls.
+To make a change to the project, please create a pull request. In order to create a pull request, simply fork the repo and create your branch from `main`. Once you are done developing, forward your PR on [the pull requests page](https://github.com/tanaos/t-llama3/pulls).

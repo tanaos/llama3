@@ -118,3 +118,7 @@ Load an untrained model with randomly initialized weights, then train it by impl
     ```
 
 4. Implement a custom training loop to train the model's parameters
+
+## Contributors wanted! 🤝
+
+We are looking for contributors! Want to help us developing this awesome project? Get started by taking a look at [CONTRIBUTING.md](./CONTRIBUTING.md)
