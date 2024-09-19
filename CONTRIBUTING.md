@@ -1,5 +1,5 @@
 # Contributing to t-llama3
-At Tanaos we 🧡 open source. We encourage contributions of any kind to any other of our repositories, including (but not limited to):
+At Tanaos we 🧡 open source. We encourage contributions of any kind to any of our repositories, including (but not limited to):
 
 - bug fixing
 - implementation of new features
