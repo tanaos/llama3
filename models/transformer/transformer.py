@@ -11,7 +11,7 @@ from models.normalization.rms_norm import RMSNorm
 
 # the default values are those used in the Hugging Face implementation of LLAMA 3
 @dataclass
-class CaesarConfig:
+class ModelConfig:
     d_model: int = 4096
     dim_kv: int = 1024
     num_q_heads: int = 32
@@ -86,7 +86,7 @@ class Transformer(nn.Module):
         load_dotenv()
         
         device = "cuda" if torch.cuda.is_available() else "cpu"
-        config = CaesarConfig()
+        config = ModelConfig()
         model = Transformer(device, config)
         sd = model.state_dict()
         sd_keys = sd.keys()
