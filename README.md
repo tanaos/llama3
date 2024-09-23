@@ -35,9 +35,17 @@ t-llama3 can be used in one of two ways: by loading a pre-trained checkpoint, or
 Load a pre-trained [Hugging Face's Llama-3-8B checkpoint](https://huggingface.co/meta-llama/Meta-Llama-3-8B) with
 `Transformer.from_pretrained()` then perform inference or fine-tune it; 
 
-> ⚠️ **Warning**: you are going to need a GPU with at least 28BG of RAM to load the model in full `torch_dtype=torch.float32` precision.
+> ⚠️ **Warning**: you are going to need a GPU with at least 28GB of RAM to load the model in full `torch_dtype=torch.float32` precision.
 
-1. Load the pre-trained model from Hugging Face
+1. Create a `.env` file in the project root and add your Hugging Face access token to it, like so
+
+    ```bash
+    HF_TOKEN=<your_huggingface_token>
+    ```
+
+    if you don't have a Hugging Face access token, you can [get one here](https://huggingface.co/settings/tokens)
+
+2. Load the pre-trained model from Hugging Face
 
     ```python
     from models.transformer.transformer import Transformer
@@ -45,7 +53,7 @@ Load a pre-trained [Hugging Face's Llama-3-8B checkpoint](https://huggingface.co
     model = Transformer.from_pretrained()
     ```
 
-2. Encode tokens with a Llama3 tokenizer
+3. Encode tokens with a Llama3 tokenizer
 
     ```python
     import torch
@@ -56,7 +64,7 @@ Load a pre-trained [Hugging Face's Llama-3-8B checkpoint](https://huggingface.co
     initial_tokens = torch.tensor([tokenizer.encode(initial_sentence)])
     ```
 
-3. Perform inference with `Transformer.generate()`
+4. Perform inference with `Transformer.generate()`
 
     ```python
     out_tokens = model.generate(idx=initial_tokens, max_new_tokens=18)
@@ -69,7 +77,7 @@ Load a pre-trained [Hugging Face's Llama-3-8B checkpoint](https://huggingface.co
     >>> ["<|begin_of_text|>Hello, I'm a language model, and I'm here to help you with any questions. comments, or just to chat."]
     ```
 
-4. (optionally) fine-tune the model by implementing a custom training loop
+5. (optionally) fine-tune the model by implementing a custom training loop
 
 ### Use it *as-is*
 
