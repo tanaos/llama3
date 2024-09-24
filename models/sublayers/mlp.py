@@ -1,17 +1,19 @@
 import torch
 from torch import nn
 
+from models.transformer.config import ModelConfig
+
 
 class SwiGLUMLP(nn.Module):
 
-    def __init__(self, config):
+    def __init__(self, config: ModelConfig):
         super().__init__()
         self.gate_proj = nn.Linear(config.d_model, config.dim_ff, bias=False)
         self.up_proj = nn.Linear(config.d_model, config.dim_ff, bias=False)
         self.down_proj = nn.Linear(config.dim_ff, config.d_model, bias=False)
         
 
-    def forward(self, x):
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
         # perform up projection to increase dimensionality from d_model to dim_ff
         up_projection = self.up_proj(x) # (B, T, dim_ff)
         # perform intermediate, gate projection

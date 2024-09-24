@@ -1,16 +1,18 @@
 from torch import nn
 import torch
 
+from models.transformer.config import ModelConfig
+
 
 class RotaryPositionEmbeddings(nn.Module):
     
     @torch.no_grad
-    def __init__(self, config):
+    def __init__(self, config: ModelConfig):
         super().__init__()
         self.base = config.rope_theta
     
     @torch.no_grad()
-    def _compute_theta(self, C):
+    def _compute_theta(self, C: int) -> torch.Tensor:
         # TODO: check why the commented out part does not work
         #return torch.tensor(
         #    [ self.base**((-2*(i-1))/C) for i in range(1, int(C/2)+1) ]
@@ -23,7 +25,7 @@ class RotaryPositionEmbeddings(nn.Module):
 
       
     @torch.no_grad()  
-    def _rotate(self, x):
+    def _rotate(self, x: torch.Tensor) -> torch.Tensor:
         ''' 
         rotate a 4D tensor x = (B, H, T, D) on the last axis, so that 
         [x1, x2, x3, x4, ...] becomes [-x_n, -x_n-1, -x_n-3, ..., x3, x2, x1]
@@ -37,11 +39,12 @@ class RotaryPositionEmbeddings(nn.Module):
         
         x1 = x[..., : x.shape[-1] // 2]
         x2 = x[..., x.shape[-1] // 2 :]
+        
         return torch.cat((-x2, x1), dim=-1)
         
         
     @torch.no_grad()
-    def forward(self, q, k):
+    def forward(self, q: torch.Tensor, k: torch.Tensor) -> torch.Tensor:
         B, H, T, D = q.shape
         m = torch.arange(0, T).view(1, 1, T, 1)
         

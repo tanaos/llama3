@@ -1,9 +1,14 @@
 import torch
 from transformers import AutoTokenizer
+from huggingface_hub import login
+import os
+from dotenv import load_dotenv
 
 from models.transformer.transformer import Transformer
 
 
+load_dotenv()
+login(token=os.getenv("HF_TOKEN"))
 tokenizer = AutoTokenizer.from_pretrained("meta-llama/Meta-Llama-3-8B-Instruct")
 
 initial_sentence = "Hello, I'm a language model,"

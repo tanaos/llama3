@@ -4,11 +4,12 @@ import torch
 from models.sublayers.mlp import SwiGLUMLP
 from models.sublayers.grouped_query_attention import GroupedQueryAttention
 from models.normalization.rms_norm import RMSNorm
+from models.transformer.config import ModelConfig
 
 
 class Decoder(nn.Module):
 
-    def __init__(self, config):
+    def __init__(self, config: ModelConfig):
         super().__init__()
         self.input_layernorm = RMSNorm(config)
         self.post_attention_layernorm = RMSNorm(config)
@@ -16,7 +17,7 @@ class Decoder(nn.Module):
         self.self_attn = GroupedQueryAttention(config)
 
 
-    def forward(self, output_embs):
+    def forward(self, output_embs: torch.Tensor) -> torch.Tensor:
         # 1. normalize input with Root Mean Square (RMS) layer norm
         norm_input = self.input_layernorm(output_embs)
         # 2. compute self-attention output via Masked Multi-Head self-attention
