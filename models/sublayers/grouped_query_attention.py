@@ -4,12 +4,13 @@ import torch.nn.functional as F
 from einops import rearrange, einsum
 import math
 
+from models.transformer.config import ModelConfig
 from models.sublayers.rotary_position_embeddings import RotaryPositionEmbeddings
 
 
 class GroupedQueryAttention(nn.Module):
 
-    def __init__(self, config, masked=True):
+    def __init__(self, config: ModelConfig, masked: bool =True):
         super().__init__()
         self.masked = masked
         self.num_q_heads = config.num_q_heads
@@ -21,7 +22,7 @@ class GroupedQueryAttention(nn.Module):
         self.o_proj = nn.Linear(config.d_model, config.d_model, bias=False)
         
     
-    def _repeat_heads(self, tensor, n_rep):
+    def _repeat_heads(self, tensor: torch.Tensor, n_rep: int) -> torch.Tensor:
         '''
         given an input tensor (B, H, T, D), repeats the H dimension n_rep-many times,
         concatenating the new dimensions on the H dimension, thus turning the input
