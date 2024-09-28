@@ -1,8 +1,7 @@
 import torch
 from torch import nn
 import torch.nn.functional as F
-from einops import rearrange, einsum
-import math
+from einops import rearrange
 
 from models.transformer.config import ModelConfig
 from models.sublayers.rotary_position_embeddings import RotaryPositionEmbeddings

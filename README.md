@@ -1,7 +1,7 @@
 # llama3 🦙🔶
 
 <p align='center'>
-    <img src='./figures/t-llama.png' width='400'>
+    <img src='./figures/llama.png' width='400'>
 </p>
 
 ## About
@@ -33,7 +33,7 @@ llama3 can be used in one of two ways: by loading a pre-trained checkpoint, or *
 ### Load a pre-trained checkpoint
 
 Load a pre-trained [Hugging Face's Llama-3-8B checkpoint](https://huggingface.co/meta-llama/Meta-Llama-3-8B) with
-`Transformer.from_pretrained()` then perform inference or fine-tune it; 
+`Llama.from_pretrained()` then perform inference or fine-tune it; 
 
 > ⚠️ **Warning**: you are going to need a GPU with at least 28GB of RAM to load the model in full `torch_dtype=torch.float32` precision.
 
@@ -62,9 +62,9 @@ Load a pre-trained [Hugging Face's Llama-3-8B checkpoint](https://huggingface.co
 4. Load the pre-trained model from Hugging Face
 
     ```python
-    from models.transformer.transformer import Transformer
+    from models.transformer.llama import Llama
 
-    model = Transformer.from_pretrained()
+    model = Llama.from_pretrained()
     ```
 
 5. Encode tokens with a Llama3 tokenizer
@@ -78,7 +78,7 @@ Load a pre-trained [Hugging Face's Llama-3-8B checkpoint](https://huggingface.co
     initial_tokens = torch.tensor([tokenizer.encode(initial_sentence)])
     ```
 
-6. Perform inference with `Transformer.generate()`
+6. Perform inference with `Llama.generate()`
 
     ```python
     out_tokens = model.generate(idx=initial_tokens, max_new_tokens=18)
@@ -97,15 +97,15 @@ Load a pre-trained [Hugging Face's Llama-3-8B checkpoint](https://huggingface.co
 
 Load an untrained model with randomly initialized weights, then train it by implementing a custom training loop:
 
-1. Instantiate a `Transformer` object by passing an instance of `ModelConfig` to it.
+1. Instantiate a `Llama` object by passing an instance of `ModelConfig` to it.
 
     ```python
-    from models.transformer.transformer import Transformer
+    from models.transformer.llama import Llama
     from models.transformer.config import ModelConfig
 
 
     config = ModelConfig()
-    m = Transformer(config)
+    m = Llama(config)
     ```
 
     the default values of `ModelConfig` are those used by Llama-3-8B:
@@ -133,7 +133,7 @@ Load an untrained model with randomly initialized weights, then train it by impl
     initial_sentence = "Hello, I'm a language model,"
     initial_tokens = torch.tensor([tokenizer.encode(initial_sentence)])
     ```
-3. Perform inference with `Transformer.generate()`
+3. Perform inference with `Llama.generate()`
 
     ```python
     out_tokens = model.generate(idx=initial_tokens, max_new_tokens=20)

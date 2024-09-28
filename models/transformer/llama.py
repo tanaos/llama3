@@ -1,23 +1,23 @@
 import torch
 from torch import nn
 import torch.nn.functional as F
-from typing import Tuple, Type, TypeVar, Optional
+from typing import Type, TypeVar, Optional
 
-from models.blocks.decoder import Decoder
+from models.blocks.transformer_block import TransformerBlock
 from models.normalization.rms_norm import RMSNorm
 from models.transformer.config import ModelConfig
 
 
-T = TypeVar("T", bound="Transformer")
+T = TypeVar("T", bound="Llama")
 
 
-class Transformer(nn.Module):
+class Llama(nn.Module):
 
     def __init__(self, device: str, config: ModelConfig):
         super().__init__()
         self.device = device
         self.embed_tokens = nn.Embedding(config.vocab_size, config.d_model)
-        self.layers = nn.ModuleList([ Decoder(config) for _ in range(config.n_layer) ])
+        self.layers = nn.ModuleList([ TransformerBlock(config) for _ in range(config.n_layer) ])
         self.norm = RMSNorm(config)
         self.lm_head = nn.Linear(config.d_model, config.vocab_size, bias=False)
 
@@ -27,12 +27,12 @@ class Transformer(nn.Module):
     ) -> tuple[torch.Tensor, Optional[float]]:
         # compute output embeddings
         x = self.embed_tokens(dec_input) # (B, T, d_model)
-        # sequentially run output embeddings through all decoder layers
+        # sequentially run output embeddings through all transformer blocks
         for layer in self.layers:
             x = layer(x)
         # normalize output of the final layer
         x = self.norm(x)
-        # run decoder output through the language model head to get logits
+        # run last transformer block output through the language model head to get logits
         logits = self.lm_head(x) # (B, T, vocab_size)
 
         if targets == None:
@@ -75,7 +75,7 @@ class Transformer(nn.Module):
         
         device = "cuda" if torch.cuda.is_available() else "cpu"
         config = ModelConfig()
-        model = Transformer(device, config)
+        model = Llama(device, config)
         sd = model.state_dict()
         sd_keys = sd.keys()
         
