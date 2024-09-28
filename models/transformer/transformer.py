@@ -1,31 +1,19 @@
 import torch
 from torch import nn
 import torch.nn.functional as F
-from dataclasses import dataclass
-import os
-from dotenv import load_dotenv
+from typing import Tuple, Type, TypeVar, Optional
 
 from models.blocks.decoder import Decoder
 from models.normalization.rms_norm import RMSNorm
+from models.transformer.config import ModelConfig
 
 
-# the default values are those used in the Hugging Face implementation of LLAMA 3
-@dataclass
-class ModelConfig:
-    d_model: int = 4096
-    dim_kv: int = 1024
-    num_q_heads: int = 32
-    num_kv_heads: int = 8
-    dim_ff: int = 14336
-    vocab_size: int = 128256
-    n_layer: int = 32
-    norm_eps: int = 1e-05
-    rope_theta: float = 500000.0
+T = TypeVar("T", bound="Transformer")
 
 
 class Transformer(nn.Module):
 
-    def __init__(self, device, config):
+    def __init__(self, device: str, config: ModelConfig):
         super().__init__()
         self.device = device
         self.embed_tokens = nn.Embedding(config.vocab_size, config.d_model)
@@ -34,7 +22,9 @@ class Transformer(nn.Module):
         self.lm_head = nn.Linear(config.d_model, config.vocab_size, bias=False)
 
 
-    def forward(self, dec_input, targets=None):
+    def forward(
+        self, dec_input: torch.Tensor, targets: Optional[torch.Tensor] = None
+    ) -> tuple[torch.Tensor, Optional[float]]:
         # compute output embeddings
         x = self.embed_tokens(dec_input) # (B, T, d_model)
         # sequentially run output embeddings through all decoder layers
@@ -61,7 +51,7 @@ class Transformer(nn.Module):
 
 
     @torch.no_grad()
-    def generate(self, idx, max_new_tokens):
+    def generate(self, idx: torch.Tensor, max_new_tokens: int) -> torch.Tensor:
         out = idx # (len(idx)), increases at each iteration
         
         for _ in range(max_new_tokens):
@@ -80,10 +70,8 @@ class Transformer(nn.Module):
     
 
     @classmethod
-    def from_pretrained(cls):
+    def from_pretrained(cls: Type[T]) -> T:
         print("loading weights from pretrained model")
-        
-        load_dotenv()
         
         device = "cuda" if torch.cuda.is_available() else "cpu"
         config = ModelConfig()
@@ -92,8 +80,6 @@ class Transformer(nn.Module):
         sd_keys = sd.keys()
         
         from transformers import AutoModelForCausalLM
-        from huggingface_hub import login
-        login(token=os.getenv("HF_TOKEN"))
         model_hf = AutoModelForCausalLM.from_pretrained(
             "meta-llama/Meta-Llama-3-8B-Instruct"
         )
