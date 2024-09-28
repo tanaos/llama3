@@ -7,7 +7,7 @@ from models.normalization.rms_norm import RMSNorm
 from models.transformer.config import ModelConfig
 
 
-class Decoder(nn.Module):
+class TransformerBlock(nn.Module):
 
     def __init__(self, config: ModelConfig):
         super().__init__()
