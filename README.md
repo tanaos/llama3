@@ -1,4 +1,4 @@
-# llama3 🦙🔶
+# llama3 🦙
 
 <p align='center'>
     <img src='./figures/llama.png' width='400'>
@@ -6,7 +6,7 @@
 
 ## About
 
-llama3 is a custom implementation of [Meta's Llama 3](https://www.llama.com/), developed internally at Tanaos. At Tanaos we 🧡 Llama and we rely on it for many of our products. That's why we decided to re-implement it internally, from scratch, in Pytorch. The result is an efficient and completely customizable model, fully compatible with [Hugging Face's Llama-3-8B weights](https://huggingface.co/meta-llama/Meta-Llama-3-8B).
+llama3 is a custom Pytorch implementation of [Meta's Llama 3](https://www.llama.com/), fully compatible with [Hugging Face's Llama-3-8B weights](https://huggingface.co/meta-llama/Meta-Llama-3-8B).
 
 ## How it works
 
